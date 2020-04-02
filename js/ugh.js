@@ -18,7 +18,7 @@ window.onload = async function() {
 
 window.onkeyup = async function(e) {
     let keycode = e.keyCode;
-    if(keycode === 83) {
+    if(keycode === 81) {
         let contents = await mon.getRecord();
         let scores = this.parser(contents);
         let topscore = this.getTopscore(scores);
