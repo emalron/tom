@@ -1,5 +1,5 @@
 window.onload = async function() {
-    Dos(document.getElementById("jsdos")).ready((fs, main) => {
+    await Dos(document.getElementById("jsdos")).ready((fs, main) => {
         fs.createFile("dosbox.conf", `
             [joystick]
             joysticktype=none
