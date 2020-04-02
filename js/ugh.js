@@ -1,8 +1,19 @@
 window.onload = async function() {
-    let contents = await this.mon.getRecord();
-    let scores = this.parser(contents);
-    let topscore = this.getTopscore(scores);
-    this.setHighScore(topscore);
+    Dos(document.getElementById("jsdos")).ready((fs, main) => {
+        fs.createFile("dosbox.conf", `
+            [joystick]
+            joysticktype=none
+        `);
+        fs.extract("https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=1pqj-n65_r1H6OjtlDPhTt904CmZn9i8P", "/UGH").then(() => {
+            main(["-conf", "dosbox.conf", "-c", "cd UGH", "-c", "UGH.EXE"]).then(async (ci) => {                        
+                window.ci = ci;
+                let contents = await this.mon.getRecord();
+                let scores = this.parser(contents);
+                let topscore = this.getTopscore(scores);
+                this.setHighScore(topscore);
+            });
+        });
+    });
 }
 
 window.onkeyup = async function(e) {

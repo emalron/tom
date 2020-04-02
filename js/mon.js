@@ -7,10 +7,12 @@ var mon = mon || {};
         return new Promise((res, rej) => {
             request = indexedDB.open("/UGH", 21);
             request.onsuccess = function(e) {
+                console.log("onsuccess")
                 db = this.result;
                 res();
             }
             request.onupgradeneeded = function(e) {
+                console.log("onupgradeneeded")
                 db = e.target.result;
                 var store = db.createObjectStore("FILE_DATA", {keyPath: "timestamp"});
                 res();
