@@ -57,5 +57,7 @@ var getTopscore = function(containers) {
 
 var setHighScore = function(score) {
     let hiscoreElem = document.getElementById("hiscore");
-    hiscoreElem.innerHTML = score;
+    if(score) {
+        hiscoreElem.innerHTML = score;
+    }
 }
