@@ -3,39 +3,63 @@
 <head>
   <meta charset="utf-8">
   <title>UGH!</title>
-  <style>
-    h1 {
-        text-align: center;
-    }
-    #jsdos {
-        zoom: 2.5;
-    }
-    #desc {
-        width: 640px;
-        margin: 0 auto;
-    }
-    #score {
-        font-size: large;
-    }
-  </style>
-  
+  <link rel="stylesheet" type="text/css" href="css/ugh.css?ver=1.0"/>
 </head>
-
 <body>
-    <div><h1>고인돌 택시 <span id="score">HISCORE <span id="hiscore">0</span></span></h1></div>
-    <div>
-        <canvas id="jsdos"></canvas>
-    </div>
-    <div id="desc">
-        <p>조작법</p>
-        <p>화살표 ↑: 위로 비행</p>
-        <p>화살표 ←, →: 각 방향으로 수평이동</p>
-        <p>q: 게임 종료 및 점수 기록</p>
-        <p>탑5 기록 중 최고점을 본인 점수로 인정함</p>
-    </div>
+    <nav>
+        <div id="main"><h1>고인돌 택시 <span id="score">HISCORE <span id="hiscore">0</span></span></h1>
+        </div>
+        <div class="centered" id="side">
+            <h2 id="login" onclick="login_event()">Login</h2>
+            <h2 id="logout" onclick="logout_event()">Logout</h2>
+        </div>
+    </nav>
+    <section>
+        <article id="lobby">
+            <h1>로그인 후 게임 시작</h1>
+        </article>
+        <article id="game">
+            <div>
+                <canvas id="jsdos"></canvas>
+            </div>
+            <div id="desc">
+                <p>조작법</p>
+                <p>화살표 ↑: 위로 비행</p>
+                <p>화살표 ←, →: 각 방향으로 수평이동</p>
+                <p>q: 게임 종료 및 점수 기록</p>
+                <p>탑5 기록 중 최고점을 본인 점수로 인정함</p>
+            </div>
+        </article>
+        <article id="ranking">
+            <p>-고인돌 택시를 빛내주신 분들-</p>
+        </article>
+    </section>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-app.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.13.1/firebase-database.js"></script>
+    <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+        apiKey: "AIzaSyBQH0aFaQTOkQMVy8GKATBitTL40QscLww",
+        authDomain: "ugh-d0c45.firebaseapp.com",
+        databaseURL: "https://ugh-d0c45.firebaseio.com",
+        projectId: "ugh-d0c45",
+        storageBucket: "ugh-d0c45.appspot.com",
+        messagingSenderId: "356518649589",
+        appId: "1:356518649589:web:67839f7943a36925a6afbc",
+        measurementId: "G-XQK9P9L18Z"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
+    </script>
     <script src="js/js-dos.js"></script>
     <script src="js/mon.js"></script>
     <script src="js/ugh.js"></script>
+    <script src="js/ughmain.js"></script>
 </body>
-
 </html>

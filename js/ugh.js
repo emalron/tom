@@ -1,27 +1,62 @@
 window.onload = async function() {
-    Dos(document.getElementById("jsdos")).ready((fs, main) => {
-        fs.createFile("dosbox.conf", `
-            [joystick]
-            joysticktype=none
-        `);
-        fs.extract("https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=1u0zNOPifzjVfz18XGeL9v7T8XDKe3owp", "/UGH").then(() => {
-            main(["-conf", "dosbox.conf", "-c", "cd UGH", "-c", "UGH.EXE"]).then(async (ci) => {                        
-                window.ci = ci;
-                let contents = await this.mon.getRecord();
-                let scores = this.parser(contents);
-                let topscore = this.getTopscore(scores);
-                this.setHighScore(topscore);
-            });
-        });
-    });
+    this.init();
+    this.gameStart();
+    let rank = await this.getRank();
+    this.showRank(rank);
 }
 
-window.onkeyup = async function(e) {
+window.onkeyup = function(e) {
     let keycode = e.keyCode;
     if(keycode === 81) {
-        let contents = await mon.getRecord();
-        let scores = this.parser(contents);
-        let topscore = this.getTopscore(scores);
+        ci.listenStdout(async (message) => {
+            if(message === ">") {
+                let trial = 0;
+                this.console.log(`end of line`);
+                let contents;
+                while(trial < 3) {
+                    contents = await mon.getRecord();
+                    if(contents.length > 0) {
+                        break;
+                    }
+                    trial++;
+                }
+                let scores = this.parser(contents);
+                let topscore = this.getTopscore(scores);
+                this.setHighScore(topscore, contents);
+                ci.exit();
+            }
+        });
+    }
+    if(keycode === 83) {
+        
+    }
+}
+
+var gameStart = async function() {
+    let isLogin = auth.currentUser;
+    if(isLogin) {
+        console.log('login checked')
+
+        Dos(document.getElementById("jsdos")).ready(async (fs, main) => {
+            fs.createFile("dosbox.conf", `
+                [joystick]
+                joysticktype=none
+            `);
+            let contents = await getContents();
+            if(!contents) {
+                contents = initial;
+            }
+            await this.mon.update(contents);
+            fs.extract("https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=1u0zNOPifzjVfz18XGeL9v7T8XDKe3owp", "/UGH").then(() => {
+                main(["-conf", "dosbox.conf", "-c", "cd UGH", "-c", "UGH.EXE"]).then(async (ci) => {
+                    window.ci = ci;
+                    contents = await this.mon.getRecord();
+                    let scores = this.parser(contents);
+                    let topscore = this.getTopscore(scores);
+                    this.setHighScore(topscore, null);
+                });
+            });
+        });
     }
 }
 
@@ -37,13 +72,37 @@ var table = {
     0: "."
 }
 
+var initial = new Uint8Array(107);
+initial = [
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223, 242,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223, 242,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223, 242,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223, 242,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223,
+    223, 223, 223, 223, 223, 242,
+    255, 0
+];
+
 var parser = function(contents) {
     let len = contents.length;
     let container = [];
     for(let i=0; i<len; i++) {
         container.push(table[contents[i]]);
     }
-    console.log(container);
     let containers = container.join("").split("\n");
     return containers;
     
@@ -55,9 +114,22 @@ var getTopscore = function(containers) {
     return score;
 }
 
-var setHighScore = function(score) {
+var setHighScore = function(score, contents) {
     let hiscoreElem = document.getElementById("hiscore");
     if(score) {
         hiscoreElem.innerHTML = score;
+        if(auth.currentUser && contents) {
+            addRecord(score, contents);
+        }
     }
+}
+
+var showRank = function(rank) {
+    let board = document.getElementById("ranking");
+    let num = 1;
+    rank.forEach(e => {
+        let str = `${num}등 ${e.name}님 ${e.score}점<br>`
+        board.innerHTML += str;
+        num++;
+    });
 }

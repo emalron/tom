@@ -1,0 +1,40 @@
+h1 {
+    text-align: center;
+}
+nav {
+    display: flex;
+}
+#jsdos {
+    zoom: 2.5;
+    margin: 0 auto;
+}
+#desc {
+    width: 640px;
+    margin: 0 auto;
+    margin-bottom: 50px;
+}
+#score {
+    font-size: large;
+}
+#main {
+    width: 75%;
+}
+#side {
+    width: 25%;
+}
+.centered {
+    text-align: center;
+}
+#logout {
+    display: none;
+}
+#lobby {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    text-align: center;
+}
+#ranking {
+    font-size: large;
+    width: 640px;
+    margin: 0 auto;
+}

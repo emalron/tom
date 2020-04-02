@@ -37,15 +37,36 @@ var mon = mon || {};
         })
     }
 
-    var run = async function() {
-        console.log("in run")
+    var getRecord = async function() {
         try {
             await conn();
             let file = await getValue();
+            console.log(`getRecord: ${file.contents}`);
             return file.contents;
         } catch(e) {
             console.error(e);
         }
     }
-    mon_.getRecord = run;
+    var update = async function(contents) {
+        try {
+            await conn();
+            let file = await getValue();
+            let store = db.transaction("FILE_DATA", "readwrite").objectStore("FILE_DATA");
+            for(let i=0; i<contents.length; i++) {
+                // 이렇게 하지 않으면 file.contents의 타입이 UInt8Array에서 Array로 바뀐다.
+                // Array 타입은 Dosbox js에서 읽을 수 없다.
+                file.contents[i] = contents[i];
+            }
+            let file2 = store.put(file, "/UGH/UGHH.HI");
+
+            file2.onsuccess = function(e) {
+                console.log('done');
+            }
+
+        } catch(e) {
+            console.error(e);
+        }
+    }
+    mon_.getRecord = getRecord;
+    mon_.update = update;
 })(mon);
