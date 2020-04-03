@@ -5,7 +5,7 @@ var mon = mon || {};
 
     var conn = function() {
         return new Promise((res, rej) => {
-            request = indexedDB.open("/UGH", 21);
+            request = indexedDB.open("/UGH2", 21);
             request.onsuccess = function(e) {
                 console.log("onsuccess")
                 db = this.result;
@@ -26,7 +26,7 @@ var mon = mon || {};
     var getValue = function() {
         return new Promise((res, rej) => {
             let store = db.transaction("FILE_DATA", "readwrite").objectStore("FILE_DATA");
-            let file = store.get("/UGH/UGHH.HI");
+            let file = store.get("/UGH2/UGHH.HI");
             file.onsuccess = (e) => {
                 let data = e.target.result;
                 res(data);
@@ -62,7 +62,7 @@ var mon = mon || {};
                     // Array 타입은 Dosbox js에서 읽을 수 없다.
                     file.contents[i] = contents[i];
                 }
-                let file2 = store.put(file, "/UGH/UGHH.HI");
+                let file2 = store.put(file, "/UGH2/UGHH.HI");
     
                 file2.onsuccess = function(e) {
                     console.log('done');
