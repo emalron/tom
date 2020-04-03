@@ -42,7 +42,7 @@ var gameStart = async function() {
                 [joystick]
                 joysticktype=none
             `);
-            fs.extract("https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=1u0zNOPifzjVfz18XGeL9v7T8XDKe3owp", "/UGH2").then(() => {
+            fs.extract("game/UGH.zip", "/UGH2").then(() => {
                 main(["-conf", "dosbox.conf", "-c", "cd UGH2", "-c", "UGH.EXE"]).then(async (ci) => {
                     window.ci = ci;
                     contents = await this.mon.getRecord();
