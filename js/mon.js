@@ -42,7 +42,6 @@ var mon = mon || {};
             let con = await conn();
             if(con == "success") {
                 let file = await getValue();
-                console.log(`getRecord: ${file.contents}`);
                 return file.contents;
             }
             return null;

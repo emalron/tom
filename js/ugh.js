@@ -13,12 +13,11 @@ window.onkeyup = function(e) {
                 let trial = 0;
                 this.console.log(`end of line`);
                 let contents;
-                while(trial < 3) {
+                while(true) {
                     contents = await mon.getRecord();
                     if(contents.length > 0) {
                         break;
                     }
-                    trial++;
                 }
                 let scores = this.parser(contents);
                 let topscore = this.getTopscore(scores);
