@@ -123,6 +123,7 @@ var setHighScore = function(score, contents) {
 var showRank = function(rank) {
     let board = document.getElementById("ranking");
     let num = 1;
+    board.innerHTML = "<p>-고인돌 택시를 빛내주신 분들-</p>";
     rank.forEach(e => {
         let str = `${num}등 ${e.name}님 ${e.score}점<br>`
         board.innerHTML += str;
