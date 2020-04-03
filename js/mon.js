@@ -5,16 +5,15 @@ var mon = mon || {};
 
     var conn = function() {
         return new Promise((res, rej) => {
-            request = indexedDB.open("/UGH2", 21);
+            request = indexedDB.open("/UGH3", 21);
             request.onsuccess = function(e) {
                 console.log("onsuccess")
                 db = this.result;
+                db.in
                 res("success");
             }
             request.onupgradeneeded = function(e) {
                 console.log("onupgradeneeded")
-                db = e.target.result;
-                var store = db.createObjectStore("FILE_DATA", {keyPath: "timestamp"});
                 res("upgrade");
             }
             request.onerror = function(e) {
@@ -22,11 +21,26 @@ var mon = mon || {};
             }
         })
     }
+
+    var dbCheck = async function() {
+        let dbs = await indexedDB.databases();
+        let result = -1;
+        for(let i=0; i<dbs.length; i++) {
+            if(dbs[i].name == "/UGH3") {
+                result = i;
+                break;
+            }
+        }
+        if(result === -1) {
+            return false;
+        }
+        return true;
+    }
     
     var getValue = function() {
         return new Promise((res, rej) => {
             let store = db.transaction("FILE_DATA", "readwrite").objectStore("FILE_DATA");
-            let file = store.get("/UGH2/UGHH.HI");
+            let file = store.get("/UGH3/UGHH.HI");
             file.onsuccess = (e) => {
                 let data = e.target.result;
                 res(data);
@@ -63,7 +77,7 @@ var mon = mon || {};
                     // Array 타입은 Dosbox js에서 읽을 수 없다.
                     file.contents[i] = contents[i];
                 }
-                let file2 = store.put(file, "/UGH2/UGHH.HI");
+                let file2 = store.put(file, "/UGH3/UGHH.HI");
     
                 file2.onsuccess = function(e) {
                     console.log('done');
@@ -73,6 +87,21 @@ var mon = mon || {};
             console.error(e);
         }
     }
+
+    var fileCheck = async function() {
+        let state = await conn();
+        if(state == "success") {
+            let file = await getValue();
+            if(file) {
+                if(file.contents.length > 0) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     mon_.getRecord = getRecord;
     mon_.update = update;
+    mon_.dbCheck = dbCheck;
 })(mon);

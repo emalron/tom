@@ -37,14 +37,22 @@ var gameStart = async function() {
     let isLogin = auth.currentUser;
     if(isLogin) {
         console.log('login checked')
-
+        let state = await this.mon.dbCheck();
+        console.log(`db state: ${state}`);
+        if(state) {
+            let contents = await this.getContents();
+            if(!contents) {
+                contents = this.initial;
+            }
+            await this.mon.update(contents);
+        }
         Dos(document.getElementById("jsdos")).ready(async (fs, main) => {
             fs.createFile("dosbox.conf", `
                 [joystick]
                 joysticktype=none
             `);
-            fs.extract("https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=1u0zNOPifzjVfz18XGeL9v7T8XDKe3owp", "/UGH2").then(() => {
-                main(["-conf", "dosbox.conf", "-c", "cd UGH2", "-c", "UGH.EXE"]).then(async (ci) => {
+            fs.extract("https://cors-anywhere.herokuapp.com/https://drive.google.com/uc?export=download&id=1u0zNOPifzjVfz18XGeL9v7T8XDKe3owp", "/UGH3").then(() => {
+                main(["-conf", "dosbox.conf", "-c", "cd UGH3", "-c", "UGH.EXE"]).then(async (ci) => {
                     window.ci = ci;
                     contents = await this.mon.getRecord();
                     let scores = this.parser(contents);
