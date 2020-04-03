@@ -22,6 +22,8 @@ window.onkeyup = function(e) {
                 let scores = this.parser(contents);
                 let topscore = this.getTopscore(scores);
                 this.setHighScore(topscore, contents);
+                let rank = await this.getRank();
+                this.showRank(rank);
                 ci.exit();
             }
         });

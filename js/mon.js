@@ -42,6 +42,7 @@ var mon = mon || {};
             let con = await conn();
             if(con == "success") {
                 let file = await getValue();
+                
                 return file.contents;
             }
             return null;
@@ -49,6 +50,7 @@ var mon = mon || {};
             console.error(e);
         }
     }
+    
     var update = async function(contents) {
         try {
             await conn();
